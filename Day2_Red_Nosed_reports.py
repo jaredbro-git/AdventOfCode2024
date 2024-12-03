@@ -15,14 +15,16 @@ def safe_rows(rows):
         if is_safe(row, row_len):
             num_safe += 1
         else:
+            #Loop row_len times 
+            #remove element at index i from the row
+            #Check if the row is now safe  
             for i in range(row_len):
                 row_copy = row[:]
                 del row_copy[i]
                 if is_safe(row_copy, row_len - 1):
                     num_safe += 1
+                    #If the row is safe by removing this value, then we don't want to keep checking for this row
                     break
-
-
     return num_safe
 
 
@@ -34,12 +36,15 @@ def is_safe(row, row_len):
         if i == 0:
             continue
         difference = abs(num - row[i - 1])
+        #If current num is greater than previous num by no more than 3
         if difference > 0 and difference <= 3 and num > row[i - 1]:
             increase_count += 1
-            
+
+        #If current num is less than previous num by no more than 3  
         if difference > 0 and difference <= 3 and num < row[i - 1]:
             decrease_count += 1
 
+    #If all elements are increasing, or all are decreasing then return True
     if increase_count == row_len or decrease_count == row_len:
         return True
      
@@ -49,7 +54,8 @@ def read_input(filename):
     with open(filename) as file:
         rows = file.read().splitlines()
   
-    rows = [[int(s) for s in row.split()] for row in rows]
+    #creates a 2d-array of rows and each element in each row is converted to integer type 
+    rows = [[int(item) for item in row.split()] for row in rows]
 
     return rows
 
